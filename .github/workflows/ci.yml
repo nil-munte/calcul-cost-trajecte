@@ -85,6 +85,9 @@ jobs:
           FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
           FIREBASE_APPCHECK_SITE_KEY: ${{ vars.FIREBASE_APPCHECK_SITE_KEY }}
         run: node scripts/write-firebase-config.js public/firebase-config.js
+      # Cada desplegament canvia l'URL del CSS i el JS, perquè el navegador no faci servir una versió antiga.
+      - name: Cache busting
+        run: sed -i -E "s#assets/app\.(js|css)\"#assets/app.\1?v=${GITHUB_SHA::8}\"#g" public/*.html && grep -h "assets/app" public/*.html
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

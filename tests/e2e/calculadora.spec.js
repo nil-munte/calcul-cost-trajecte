@@ -72,3 +72,13 @@ test('calcula el preu de la llum a partir de la factura', async ({ page }) => {
   await expect(page.locator('#bill')).toBeHidden();
   await expect(page.locator('#home')).toHaveValue('0,1526');
 });
+
+test('el botó de viatge nou demana confirmació i buida el viatge', async ({ page }) => {
+  await page.locator('#clear-example').click();
+  await page.locator('#km').fill('120');
+  await page.getByRole('button', { name: 'Viatge nou' }).click();
+  await expect(page.locator('#reset-ask')).toBeVisible();
+  await page.getByRole('button', { name: 'Sí, començar de nou' }).click();
+  await expect(page.locator('#km')).toHaveValue('');
+  await expect(page.locator('#reset')).toBeVisible();
+});

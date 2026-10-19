@@ -238,17 +238,14 @@
     $('b-price').textContent = isNaN(billPrice) ? '—' : fmt(billPrice, 3) + ' €/kWh';
     $('bill-use').disabled = isNaN(billPrice);
   }
-  function toggleBill(open) {
-    $('bill').hidden = !open;
-    $('bill-open').setAttribute('aria-expanded', String(open));
-    if (open) { calcBill(); $('b-kwh').focus(); } else { $('bill-open').focus(); }
-  }
-  $('bill-open').addEventListener('click', function () { toggleBill($('bill').hidden); });
-  $('bill-close').addEventListener('click', function () { toggleBill(false); });
+  $('bill-open').addEventListener('click', function () { calcBill(); $('bill').showModal(); $('b-kwh').focus(); });
+  $('bill').addEventListener('close', function () { $('bill-open').focus(); });
+  // Clic a fora del quadre: tanca.
+  $('bill').addEventListener('click', function (e) { if (e.target === $('bill')) $('bill').close(); });
   $('bill-use').addEventListener('click', function () {
     if (isNaN(billPrice)) return;
     $('home').value = plain(billPrice, 4);
-    toggleBill(false);
+    $('bill').close();
     calc(); save();
     $('home').focus();
   });

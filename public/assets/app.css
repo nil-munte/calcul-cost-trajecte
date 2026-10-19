@@ -210,7 +210,12 @@ h1 .logo { flex: none; width: 40px; height: 40px; border-radius: 10px; }
 .doc a { color: var(--home); }
 
 /* Calculadora del preu de la llum */
-.bill { display: grid; gap: 12px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; }
+.bill { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--fg); }
+.bill::backdrop { background: rgba(0, 0, 0, 0.55); }
+.bill-form { display: grid; gap: 14px; margin: 0; }
 .bill .fields { gap: 12px; }
 .bill-out { margin: 0; font-variant-numeric: tabular-nums; }
 .bill-out b { font-family: var(--font-display); font-size: 1.15rem; }
+.reset-ask { display: grid; gap: 10px; padding: 12px; border-radius: 8px; background: var(--warn-bg); color: var(--warn-fg); }
+.reset-ask .ask { margin: 0; }
+.panel-head #reset { min-height: 34px; }

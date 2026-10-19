@@ -2,6 +2,14 @@
 
 El format segueix [Keep a Changelog](https://keepachangelog.com/ca/1.1.0/) i el projecte fa servir [versionat semàntic](https://semver.org/lang/ca/).
 
+## [1.5.0] - 2026-10-19
+
+### Canviat
+
+- La calculadora del preu de la llum s'obre en una finestra emergent.
+- El botó «Viatge nou» és a dalt del panell del viatge.
+- Cada desplegament canvia l'URL del CSS i el JS, perquè el navegador no mostri versions antigues.
+
 ## [1.4.0] - 2026-10-19
 
 ### Afegit

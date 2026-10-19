@@ -69,7 +69,17 @@
       </div>
 
       <section class="panel" aria-labelledby="h-trip">
-        <div class="panel-head"><h2 id="h-trip">El viatge</h2></div>
+        <div class="panel-head">
+          <h2 id="h-trip">El viatge</h2>
+          <button type="button" id="reset">+ Viatge nou</button>
+        </div>
+        <div id="reset-ask" class="reset-ask" hidden>
+          <p class="ask">S'esborraran els km i les càrregues que no hagis desat.</p>
+          <div class="ask-row">
+            <button type="button" id="reset-yes" class="danger">Sí, començar de nou</button>
+            <button type="button" id="reset-no">Cancel·lar</button>
+          </div>
+        </div>
         <div class="fields">
           <div>
             <label for="t-name">Nom del viatge (opcional)</label>
@@ -122,34 +132,7 @@
           </div>
           <p class="hint wide">Opcional. El comptador marca més del que arriba a la bateria; un 8–10 % és habitual.</p>
           <div class="wide">
-            <button type="button" id="bill-open" class="link" aria-expanded="false" aria-controls="bill">No saps el preu de la llum? Calcula'l amb la factura</button>
-          </div>
-          <div id="bill" class="bill wide" hidden>
-            <h3 class="mini">Preu de la llum segons la factura</h3>
-            <p class="hint">Busca el «terme d'energia» o «energia consumida»: els kWh i l'import, sense impostos. Si tens tarifa per hores i carregues de nit, fes servir els kWh i l'import del període vall.</p>
-            <div class="fields">
-              <div>
-                <label for="b-kwh">Energia consumida</label>
-                <div class="inp"><input id="b-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
-              </div>
-              <div>
-                <label for="b-eur">Import de l'energia</label>
-                <div class="inp"><input id="b-eur" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€</span></div>
-              </div>
-              <div>
-                <label for="b-iee">Impost elèctric</label>
-                <div class="inp"><input id="b-iee" type="text" inputmode="decimal" autocomplete="off" value="5,11"><span class="unit">%</span></div>
-              </div>
-              <div>
-                <label for="b-iva">IVA</label>
-                <div class="inp"><input id="b-iva" type="text" inputmode="decimal" autocomplete="off" value="21"><span class="unit">%</span></div>
-              </div>
-            </div>
-            <p class="bill-out" role="status">Preu per kWh, amb impostos: <b id="b-price">—</b></p>
-            <div class="actions">
-              <button type="button" id="bill-use" class="primary" disabled>Fer servir aquest preu</button>
-              <button type="button" id="bill-close">Tancar</button>
-            </div>
+            <button type="button" id="bill-open" class="link" aria-haspopup="dialog">No saps el preu de la llum? Calcula'l amb la factura</button>
           </div>
         </div>
       </section>
@@ -187,16 +170,6 @@
         <button type="button" id="lb-close" class="primary">Tancar</button>
       </div>
 
-      <div class="actions">
-        <button type="button" id="reset" class="link">Començar un viatge nou</button>
-      </div>
-      <div id="reset-ask" class="panel" hidden>
-        <p class="ask" style="margin:0">S'esborraran els km i les càrregues que no hagis desat.</p>
-        <div class="ask-row">
-          <button type="button" id="reset-yes" class="danger">Sí, començar de nou</button>
-          <button type="button" id="reset-no">Cancel·lar</button>
-        </div>
-      </div>
     </div>
 
     <aside class="result" aria-labelledby="h-result" aria-live="polite">
@@ -300,5 +273,36 @@
     <p>Fet per <a href="https://nil-munte.github.io/">Nil Munté</a> · <a href="privacitat.html">Privacitat</a> · <a href="https://github.com/nil-munte/calcul-cost-trajecte">Codi obert a GitHub</a></p>
   </footer>
 </div>
+<dialog id="bill" class="bill" aria-labelledby="h-bill">
+  <form method="dialog" class="bill-form">
+    <div class="panel-head">
+      <h2 id="h-bill">Preu de la llum segons la factura</h2>
+    </div>
+    <p class="hint">Busca el «terme d'energia» o «energia consumida»: els kWh i l'import, sense impostos. Si tens tarifa per hores i carregues de nit, fes servir els del període vall.</p>
+    <div class="fields">
+      <div>
+        <label for="b-kwh">Energia consumida</label>
+        <div class="inp"><input id="b-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
+      </div>
+      <div>
+        <label for="b-eur">Import de l'energia</label>
+        <div class="inp"><input id="b-eur" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€</span></div>
+      </div>
+      <div>
+        <label for="b-iee">Impost elèctric</label>
+        <div class="inp"><input id="b-iee" type="text" inputmode="decimal" autocomplete="off" value="5,11"><span class="unit">%</span></div>
+      </div>
+      <div>
+        <label for="b-iva">IVA</label>
+        <div class="inp"><input id="b-iva" type="text" inputmode="decimal" autocomplete="off" value="21"><span class="unit">%</span></div>
+      </div>
+    </div>
+    <p class="bill-out" role="status">Preu per kWh, amb impostos: <b id="b-price">—</b></p>
+    <div class="actions">
+      <button type="button" id="bill-use" class="primary" disabled>Fer servir aquest preu</button>
+      <button type="submit" value="cancel">Cancel·lar</button>
+    </div>
+  </form>
+</dialog>
 </body>
 </html>
