@@ -18,7 +18,7 @@
 | `FIREBASE_AUTH_DOMAIN` | `authDomain` |
 | `FIREBASE_PROJECT_ID` | `projectId` |
 | `FIREBASE_APP_ID` | `appId` |
-| `FIREBASE_APPCHECK_SITE_KEY` | Clau de lloc de reCAPTCHA v3 registrada a App Check (opcional) |
+| `FIREBASE_APPCHECK_SITE_KEY` | Clau de lloc de Fraud Defense (reCAPTCHA Enterprise) registrada a App Check (opcional) |
 
 **Secret** (environment `production`):
 

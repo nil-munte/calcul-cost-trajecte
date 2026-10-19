@@ -6,6 +6,6 @@ export const firebaseConfig = {
   authDomain: '',
   projectId: '',
   appId: '',
-  // Opcional: clau de lloc de reCAPTCHA v3 per a App Check.
+  // Opcional: clau de lloc de Fraud Defense (reCAPTCHA Enterprise) per a App Check.
   appCheckSiteKey: ''
 };

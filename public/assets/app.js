@@ -879,8 +879,8 @@
       return Promise.all(loads).then(function (mods) {
         var App = mods[0], Au = mods[1], Fs = mods[2], Ac = mods[3];
         var app = App.initializeApp(cfg);
-        // App Check: Firestore i Auth només accepten peticions d'aquesta web (reCAPTCHA v3).
-        if (Ac) Ac.initializeAppCheck(app, { provider: new Ac.ReCaptchaV3Provider(cfg.appCheckSiteKey), isTokenAutoRefreshEnabled: true });
+        // App Check: Firestore i Auth només accepten peticions d'aquesta web (Fraud Defense / reCAPTCHA Enterprise).
+        if (Ac) Ac.initializeAppCheck(app, { provider: new Ac.ReCaptchaEnterpriseProvider(cfg.appCheckSiteKey), isTokenAutoRefreshEnabled: true });
         var auth = Au.getAuth(app);
         fb = {
           auth: auth, db: Fs.getFirestore(app),

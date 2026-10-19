@@ -12,7 +12,7 @@ const keys = {
 const config = Object.fromEntries(Object.entries(keys).map(([k, env]) => [k, process.env[env] ?? '']));
 const missing = Object.entries(keys).filter(([k]) => !config[k]).map(([, env]) => env);
 
-// Opcional: clau de lloc de reCAPTCHA v3 per a App Check.
+// Opcional: clau de lloc de Fraud Defense (reCAPTCHA Enterprise) per a App Check.
 if (process.env.FIREBASE_APPCHECK_SITE_KEY) config.appCheckSiteKey = process.env.FIREBASE_APPCHECK_SITE_KEY;
 
 if (missing.length) {
