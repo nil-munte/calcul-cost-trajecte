@@ -220,10 +220,38 @@
   /* ---------- Esdeveniments ---------- */
   document.addEventListener('input', function (e) {
     if (e.target.closest('.example')) return;
+    if (e.target.closest('#bill')) { calcBill(); return; }
     calc();
     if (['home', 'loss', 'cons', 'cap'].indexOf(e.target.id) > -1) save();
   });
   $('method').addEventListener('change', function () { applyMethodUI(); calc(); save(); });
+
+  /* ---------- Preu de la llum segons la factura ---------- */
+  // Cost d'un kWh més: preu de l'energia × (1 + impost elèctric) × (1 + IVA). El terme de potència no hi compta.
+  var billPrice = NaN;
+  function calcBill() {
+    var kwh = num($('b-kwh').value), eurE = num($('b-eur').value);
+    var iee = num($('b-iee').value), iva = num($('b-iva').value);
+    if (isNaN(iee) || iee < 0) iee = 0;
+    if (isNaN(iva) || iva < 0) iva = 0;
+    billPrice = kwh > 0 && eurE > 0 ? eurE / kwh * (1 + iee / 100) * (1 + iva / 100) : NaN;
+    $('b-price').textContent = isNaN(billPrice) ? '—' : fmt(billPrice, 3) + ' €/kWh';
+    $('bill-use').disabled = isNaN(billPrice);
+  }
+  function toggleBill(open) {
+    $('bill').hidden = !open;
+    $('bill-open').setAttribute('aria-expanded', String(open));
+    if (open) { calcBill(); $('b-kwh').focus(); } else { $('bill-open').focus(); }
+  }
+  $('bill-open').addEventListener('click', function () { toggleBill($('bill').hidden); });
+  $('bill-close').addEventListener('click', function () { toggleBill(false); });
+  $('bill-use').addEventListener('click', function () {
+    if (isNaN(billPrice)) return;
+    $('home').value = plain(billPrice, 4);
+    toggleBill(false);
+    calc(); save();
+    $('home').focus();
+  });
   $('add').addEventListener('click', function () {
     var el = addRow();
     el.querySelector('.r-kwh').focus();

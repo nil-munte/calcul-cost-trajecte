@@ -10,6 +10,7 @@ Calculadora del cost real d'un viatge en cotxe elèctric, que combina l'energia 
 ## Funcionalitats
 
 - Càlcul per consum (km × Wh/km) o per estat de la bateria (% inicial i final).
+- Preu de la llum de casa calculat a partir de la factura.
 - Càrregues externes amb preu propi; la resta s'imputa a la tarifa de casa, amb pèrdues de càrrega.
 - Historial per usuari amb justificants (imatges comprimides al client), edició i exportació a CSV.
 - Preferències sincronitzades entre dispositius.

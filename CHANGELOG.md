@@ -2,6 +2,12 @@
 
 El format segueix [Keep a Changelog](https://keepachangelog.com/ca/1.1.0/) i el projecte fa servir [versionat semàntic](https://semver.org/lang/ca/).
 
+## [1.4.0] - 2026-10-19
+
+### Afegit
+
+- Calculadora del preu de la llum de casa a partir de la factura (terme d'energia, impost elèctric i IVA).
+
 ## [1.3.0] - 2026-10-19
 
 ### Canviat

@@ -60,3 +60,15 @@ test('mostra el nom i la data del viatge al resultat', async ({ page }) => {
   await page.locator('#t-name').fill('');
   await expect(page.locator('#r-trip')).toBeHidden();
 });
+
+test('calcula el preu de la llum a partir de la factura', async ({ page }) => {
+  await page.getByRole('button', { name: /Calcula'l amb la factura/ }).click();
+  await expect(page.locator('#bill-use')).toBeDisabled();
+  await page.locator('#b-kwh').fill('300');
+  await page.locator('#b-eur').fill('36');
+  // 36 € / 300 kWh = 0,12 €/kWh × 1,0511 (impost elèctric) × 1,21 (IVA)
+  await expect(page.locator('#b-price')).toHaveText('0,153 €/kWh');
+  await page.locator('#bill-use').click();
+  await expect(page.locator('#bill')).toBeHidden();
+  await expect(page.locator('#home')).toHaveValue('0,1526');
+});

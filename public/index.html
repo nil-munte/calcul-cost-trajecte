@@ -121,6 +121,36 @@
             <div class="inp"><input id="loss" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
           </div>
           <p class="hint wide">Opcional. El comptador marca més del que arriba a la bateria; un 8–10 % és habitual.</p>
+          <div class="wide">
+            <button type="button" id="bill-open" class="link" aria-expanded="false" aria-controls="bill">No saps el preu de la llum? Calcula'l amb la factura</button>
+          </div>
+          <div id="bill" class="bill wide" hidden>
+            <h3 class="mini">Preu de la llum segons la factura</h3>
+            <p class="hint">Busca el «terme d'energia» o «energia consumida»: els kWh i l'import, sense impostos. Si tens tarifa per hores i carregues de nit, fes servir els kWh i l'import del període vall.</p>
+            <div class="fields">
+              <div>
+                <label for="b-kwh">Energia consumida</label>
+                <div class="inp"><input id="b-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
+              </div>
+              <div>
+                <label for="b-eur">Import de l'energia</label>
+                <div class="inp"><input id="b-eur" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€</span></div>
+              </div>
+              <div>
+                <label for="b-iee">Impost elèctric</label>
+                <div class="inp"><input id="b-iee" type="text" inputmode="decimal" autocomplete="off" value="5,11"><span class="unit">%</span></div>
+              </div>
+              <div>
+                <label for="b-iva">IVA</label>
+                <div class="inp"><input id="b-iva" type="text" inputmode="decimal" autocomplete="off" value="21"><span class="unit">%</span></div>
+              </div>
+            </div>
+            <p class="bill-out" role="status">Preu per kWh, amb impostos: <b id="b-price">—</b></p>
+            <div class="actions">
+              <button type="button" id="bill-use" class="primary" disabled>Fer servir aquest preu</button>
+              <button type="button" id="bill-close">Tancar</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -246,6 +276,10 @@
     <details>
       <summary>Com es calcula el cost?</summary>
       <p>Es calcula l'energia del viatge (km × consum, o la diferència de bateria). Les càrregues de fora es paguen al seu preu, i la resta es compta al preu de la llum de casa.</p>
+    </details>
+    <details>
+      <summary>Com sé quant em costa el kWh a casa?</summary>
+      <p>A la factura, divideix l'import del terme d'energia pels kWh consumits i suma-hi l'impost elèctric i l'IVA. El terme de potència no compta, perquè el pagues igualment. La calculadora ho fa per tu amb «Calcula'l amb la factura».</p>
     </details>
     <details>
       <summary>Què són les pèrdues de càrrega?</summary>

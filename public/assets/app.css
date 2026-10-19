@@ -208,3 +208,9 @@ h1 .logo { flex: none; width: 40px; height: 40px; border-radius: 10px; }
 .doc h2 { margin-top: 28px; font-size: 1.15rem; }
 .doc p, .doc li { color: var(--fg); }
 .doc a { color: var(--home); }
+
+/* Calculadora del preu de la llum */
+.bill { display: grid; gap: 12px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; }
+.bill .fields { gap: 12px; }
+.bill-out { margin: 0; font-variant-numeric: tabular-nums; }
+.bill-out b { font-family: var(--font-display); font-size: 1.15rem; }
