@@ -14,7 +14,7 @@
     "lint:js": "eslint .",
     "lint:html": "html-validate public/index.html",
     "test": "npm run test:e2e",
-    "test:rules": "firebase emulators:exec --only firestore --project demo-cost-trajecte \"node --test tests/rules/\"",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-cost-trajecte \"node --test tests/rules/firestore.rules.test.js\"",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
