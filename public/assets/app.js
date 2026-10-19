@@ -1,400 +1,4 @@
-<!doctype html>
-<html lang="ca">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cost de viatge Tesla</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap">
-<style>
-/* Layout: columna d'entrades (viatge + càrregues) a l'esquerra, resultat enganxat a la dreta; en mòbil tot en una columna. */
-:root {
-  --bg: #f1f5f5;
-  --surface: #ffffff;
-  --fg: #12201f;
-  --muted: #566867;
-  --line: #d3dedd;
-  --home: #0b7a6b;      /* energia de casa */
-  --away: #bd5a14;      /* energia de fora */
-  --on-home: #ffffff;
-  --warn-bg: #fff3df;
-  --warn-fg: #6b3c05;
-  --focus: #1b6ef3;
-  --danger: #b3261e;
-  --on-danger: #ffffff;
-  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
-  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --danger: #f2766b; --on-danger: #3a0b07;
-    --bg: #0c1413; --surface: #131f1e; --fg: #e5f0ee; --muted: #93a8a5; --line: #263836;
-    --home: #3cc1ad; --away: #f0914a; --on-home: #062a25;
-    --warn-bg: #3a2b12; --warn-fg: #f6d9a8; --focus: #7aa8ff;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --danger: #f2766b; --on-danger: #3a0b07;
-  --bg: #0c1413; --surface: #131f1e; --fg: #e5f0ee; --muted: #93a8a5; --line: #263836;
-  --home: #3cc1ad; --away: #f0914a; --on-home: #062a25;
-  --warn-bg: #3a2b12; --warn-fg: #f6d9a8; --focus: #7aa8ff;
-  color-scheme: dark;
-}
-
-* { box-sizing: border-box; }
-body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
-.wrap {
-  max-width: 1040px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 28px 48px;
-}
-h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.6rem, 4vw, 2.1rem); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
-.lead { color: var(--muted); margin: 6px 0 0; max-width: 60ch; }
-h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; margin: 0; }
-
-.grid { display: grid; gap: 20px; margin-top: 24px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 880px) {
-  .grid { grid-template-columns: minmax(0, 1fr) 380px; align-items: start; }
-  .result { position: sticky; top: 16px; }
-}
-.col { display: grid; gap: 20px; min-width: 0; }
-
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; min-width: 0; }
-.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.hint { color: var(--muted); font-size: 0.875rem; margin: 0; }
-
-.fields { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.fields .wide { grid-column: 1 / -1; }
-@media (max-width: 480px) { .fields { grid-template-columns: minmax(0, 1fr); } }
-
-label, .lbl { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
-.inp { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); min-width: 0; }
-.inp:focus-within { outline: 2px solid var(--focus); outline-offset: 1px; }
-.inp input, .inp select {
-  font: inherit; color: var(--fg); background: transparent; border: 0; min-width: 0; height: 44px; padding: 0 12px;
-}
-.inp input { flex: 1 1 auto; width: 100%; font-variant-numeric: tabular-nums; }
-.inp input:focus, .inp select:focus { outline: none; }
-.inp .unit { display: flex; align-items: center; padding: 0 12px 0 0; color: var(--muted); font-size: 0.875rem; white-space: nowrap; }
-select option { background: var(--surface); color: var(--fg); }
-.inp select.grow { flex: 1 1 auto; width: 100%; color: var(--fg); font-size: 1rem; }
-.inp select { flex: 0 0 auto; padding-right: 8px; color: var(--muted); font-size: 0.875rem; cursor: pointer; }
-
-.charges { display: grid; gap: 12px; }
-.charge { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)) ; }
-.charge .name { grid-column: 1 / -1; }
-.charge-foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.charge-total { font-variant-numeric: tabular-nums; font-size: 0.9rem; color: var(--muted); }
-.charge-total b { color: var(--fg); font-weight: 600; }
-.charge-total .miss { color: var(--warn-fg); background: var(--warn-bg); padding: 1px 8px; border-radius: 99px; font-size: 0.8125rem; }
-@media (min-width: 640px) {
-  .charge { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); }
-  .charge .name { grid-column: auto; }
-}
-
-button { font: inherit; cursor: pointer; border-radius: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--line); background: transparent; color: var(--fg); }
-button:hover { border-color: var(--muted); }
-button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-button.primary { background: var(--home); border-color: var(--home); color: var(--on-home); font-weight: 600; }
-button.primary:hover { filter: brightness(1.06); }
-button.link { border: 0; min-height: 32px; padding: 0 6px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
-.actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
-.example { background: var(--warn-bg); color: var(--warn-fg); border-radius: 8px; padding: 10px 14px; font-size: 0.9rem; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.example button { color: inherit; border-color: currentColor; min-height: 34px; }
-
-/* Resultat */
-.result { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 18px; min-width: 0; }
-.total-label { font-size: 0.8125rem; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
-.total { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 9vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 2px; }
-.ratios { display: flex; gap: 8px 18px; flex-wrap: wrap; margin-top: 6px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.ratios b { color: var(--fg); font-weight: 600; }
-
-.bar { display: flex; height: 14px; border-radius: 99px; overflow: hidden; background: var(--line); }
-.bar span { display: block; height: 100%; transition: width 0.25s ease; }
-.bar .b-home { background: var(--home); }
-.bar .b-away { background: var(--away); }
-@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
-
-.split { display: grid; gap: 10px; }
-.split-row { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 4px 10px; align-items: baseline; }
-.sw { width: 12px; height: 12px; border-radius: 3px; align-self: center; }
-.sw.home { background: var(--home); } .sw.away { background: var(--away); }
-.split-row .t { font-weight: 600; }
-.split-row .d { grid-column: 2; color: var(--muted); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
-.split-row .v { grid-row: 1; grid-column: 3; font-weight: 600; font-variant-numeric: tabular-nums; }
-
-.facts { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-.facts div { display: flex; justify-content: space-between; gap: 12px; }
-.facts dt { color: var(--muted); } .facts dd { margin: 0; font-weight: 600; text-align: right; }
-dl.facts { margin: 0; }
-
-.notes { display: grid; gap: 8px; }
-.note { background: var(--warn-bg); color: var(--warn-fg); border-radius: 8px; padding: 10px 12px; font-size: 0.875rem; }
-.empty { color: var(--muted); padding: 8px 0; }
-.status { font-size: 0.875rem; color: var(--muted); min-height: 1.3em; }
-
-/* Desar i historial */
-button:disabled { opacity: 0.5; cursor: not-allowed; }
-button:disabled:hover { border-color: var(--line); }
-.save { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 12px; }
-.mini { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 0.95rem; }
-.save-fields { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 400px) { .save-fields { grid-template-columns: 150px minmax(0, 1fr); } }
-
-.proof-block { display: grid; gap: 12px; align-content: start; }
-.proof-block.dropping { outline: 2px dashed var(--focus); outline-offset: 4px; border-radius: 8px; }
-.proofs { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; }
-.proof { display: grid; gap: 6px; justify-items: start; align-content: start; }
-button.thumb { padding: 0; min-height: 0; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); }
-button.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.proof-ask { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 0.8125rem; }
-.proof-ask button { min-height: 32px; padding: 0 10px; }
-.proof .link { font-size: 0.8125rem; }
-.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.88); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-.lightbox img { max-width: 100%; max-height: calc(100% - 64px); object-fit: contain; border-radius: 6px; background: #ffffff; }
-[hidden] { display: none !important; }
-.history { margin-top: 20px; }
-.hsum { display: grid; gap: 12px 24px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 0; }
-.hsum div { display: grid; gap: 2px; }
-.hsum dt { font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
-.hsum dd { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
-.tablewrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 680px; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
-th { text-align: left; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-th.n, td.n { text-align: right; }
-td.nm { max-width: 240px; overflow-wrap: anywhere; }
-td.acts { white-space: nowrap; text-align: right; }
-td.acts button { min-height: 32px; padding: 0 10px; margin-left: 4px; }
-tr.active td { background: var(--bg); }
-.swatch { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
-.swatch.home { background: var(--home); } .swatch.away { background: var(--away); }
-tr.detail td { background: var(--bg); padding: 14px 16px; }
-
-button.danger { background: var(--danger); border-color: var(--danger); color: var(--on-danger); font-weight: 600; }
-button.danger:hover { filter: brightness(1.08); border-color: var(--danger); }
-.ask-row { display: flex; gap: 10px 12px; align-items: center; flex-wrap: wrap; }
-.ask { font-size: 0.875rem; }
-td.acts .ask { display: block; white-space: normal; max-width: 220px; margin: 0 0 6px auto; text-align: right; }
-.charge-ask { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; font-size: 0.9rem; }
-.ask-btns { display: flex; gap: 8px; }
-.detail-text { margin: 0; max-width: 70ch; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-/* Sessió */
-.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px 24px; flex-wrap: wrap; }
-.auth { display: flex; align-items: center; gap: 10px; min-height: 44px; }
-.auth #user { display: flex; align-items: center; gap: 10px; }
-.auth img { border-radius: 50%; width: 28px; height: 28px; }
-.auth #uname { font-size: 0.9rem; max-width: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* Reinici mínim */
-:root { color-scheme: light; }
-body { margin: 0; }
-img { max-width: 100%; }
-[hidden] { display: none !important; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <h1>Cost de viatge Tesla</h1>
-      <p class="lead">Posa els quilòmetres i el consum del viatge, el preu de la llum de casa i les càrregues que has fet fora. La resta es calcula sola.</p>
-    </div>
-    <div class="auth">
-      <button type="button" id="login" class="primary" hidden>Entrar amb Google</button>
-      <span id="user" hidden>
-        <img id="avatar" alt="" referrerpolicy="no-referrer" width="28" height="28">
-        <span id="uname"></span>
-        <button type="button" id="logout" class="link">Sortir</button>
-      </span>
-    </div>
-  </header>
-
-  <div class="grid">
-    <div class="col">
-      <div id="example" class="example" hidden>
-        <span>Ara hi ha dades d'exemple. Esborra-les i posa les del teu viatge.</span>
-        <button type="button" id="clear-example">Esborrar l'exemple</button>
-      </div>
-
-      <section class="panel" aria-labelledby="h-trip">
-        <div class="panel-head"><h2 id="h-trip">El viatge</h2></div>
-        <div class="fields">
-          <div class="wide">
-            <label for="method">Com vols calcular l'energia gastada?</label>
-            <div class="inp">
-              <select id="method" class="grow">
-                <option value="consum">Amb el consum del viatge (km × consum)</option>
-                <option value="bateria">Amb la bateria (% en sortir i en arribar)</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label for="km">Quilòmetres totals</label>
-            <div class="inp"><input id="km" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">km</span></div>
-          </div>
-          <div id="cons-wrap">
-            <label for="cons">Consum mitjà</label>
-            <div class="inp">
-              <input id="cons" type="text" inputmode="decimal" autocomplete="off" placeholder="0">
-              <span class="unit">Wh/km</span>
-            </div>
-          </div>
-          <div class="bat" hidden>
-            <label for="soc0">Bateria en sortir</label>
-            <div class="inp"><input id="soc0" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
-          </div>
-          <div class="bat" hidden>
-            <label for="soc1">Bateria en arribar</label>
-            <div class="inp"><input id="soc1" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
-          </div>
-          <div class="bat" hidden>
-            <label for="cap">Capacitat de la bateria</label>
-            <div class="inp"><input id="cap" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
-          </div>
-          <p class="hint wide bat" hidden>Amb la bateria es compta tot el que ha gastat el cotxe, també el que gasta aparcat. A casa es compta el que caldria carregar per tornar al % amb què vas sortir. La capacitat és la de la teva bateria; si no és exacta, el resultat serà aproximat.</p>
-          <div>
-            <label for="home">Preu de la llum a casa</label>
-            <div class="inp"><input id="home" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€/kWh</span></div>
-          </div>
-          <div>
-            <label for="loss">Pèrdues de càrrega a casa</label>
-            <div class="inp"><input id="loss" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
-          </div>
-          <p class="hint wide">Les pèrdues són opcionals. El comptador de casa marca una mica més del que arriba a la bateria; amb 0 % es fa el càlcul simple, amb 8–10 % és més realista.</p>
-        </div>
-      </section>
-
-      <section class="panel" aria-labelledby="h-charges">
-        <div class="panel-head">
-          <h2 id="h-charges">Càrregues fora de casa</h2>
-          <p class="hint">Mira els kWh i el preu a l'historial de càrregues de l'app.</p>
-        </div>
-        <div id="charges" class="charges"></div>
-        <datalist id="places"></datalist>
-        <div class="actions">
-          <button type="button" id="add" class="primary">Afegir càrrega</button>
-        </div>
-      </section>
-
-      <section id="proof-block" class="panel proof-block" aria-labelledby="h-proof">
-        <div class="panel-head">
-          <h2 id="h-proof">Justificants del viatge</h2>
-          <p class="hint">Captures de les càrregues, del consum del cotxe, tiquets o factures.</p>
-        </div>
-        <div id="proofs" class="proofs"></div>
-        <p id="proof-empty" class="hint">Encara no hi ha cap imatge.</p>
-        <div class="actions">
-          <button type="button" id="proof-add" disabled>Afegir imatges</button>
-          <input id="proof-file" type="file" accept="image/*" multiple hidden>
-          <span id="proof-status" class="status" role="status"></span>
-        </div>
-        <p id="proof-hint" class="hint"></p>
-      </section>
-
-      <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Imatge ampliada" hidden>
-        <img id="lb-img" alt="Justificant del viatge">
-        <button type="button" id="lb-close" class="primary">Tancar</button>
-      </div>
-
-      <div class="actions">
-        <button type="button" id="reset" class="link">Començar un viatge nou</button>
-      </div>
-      <div id="reset-ask" class="panel" hidden>
-        <p class="ask" style="margin:0">Començar un viatge nou esborra els km i les càrregues d'ara. Si no els has desat a l'historial, es perdran.</p>
-        <div class="ask-row">
-          <button type="button" id="reset-yes" class="danger">Sí, començar de nou</button>
-          <button type="button" id="reset-no">Cancel·lar</button>
-        </div>
-      </div>
-    </div>
-
-    <aside class="result" aria-labelledby="h-result" aria-live="polite">
-      <h2 id="h-result" class="total-label">Cost total del viatge</h2>
-      <div>
-        <div id="total" class="total">—</div>
-        <div class="ratios">
-          <span><b id="per100">—</b> /100 km</span>
-          <span><b id="perkm">—</b> /km</span>
-        </div>
-      </div>
-
-      <div>
-        <div class="bar" role="img" id="bar" aria-label="Repartiment de l'energia entre casa i fora">
-          <span class="b-home" id="b-home" style="width:100%"></span>
-          <span class="b-away" id="b-away" style="width:0%"></span>
-        </div>
-      </div>
-
-      <div class="split">
-        <div class="split-row">
-          <span class="sw home" aria-hidden="true"></span>
-          <span class="t">Casa</span>
-          <span class="v" id="home-cost">—</span>
-          <span class="d" id="home-detail">—</span>
-        </div>
-        <div class="split-row">
-          <span class="sw away" aria-hidden="true"></span>
-          <span class="t">Fora</span>
-          <span class="v" id="away-cost">—</span>
-          <span class="d" id="away-detail">—</span>
-        </div>
-      </div>
-
-      <dl class="facts">
-        <div><dt>Energia gastada al viatge</dt><dd id="f-energy">—</dd></div>
-        <div><dt>Si tot s'hagués carregat a casa</dt><dd id="f-allhome">—</dd></div>
-        <div><dt>Diferència per haver carregat fora</dt><dd id="f-diff">—</dd></div>
-      </dl>
-
-      <div id="notes" class="notes"></div>
-      <div class="actions">
-        <button type="button" id="copy">Copiar resum</button>
-        <span id="status" class="status" role="status"></span>
-      </div>
-
-      <div class="save">
-        <h3 class="mini">Desar a l'historial</h3>
-        <div class="save-fields">
-          <div>
-            <label for="t-date">Data</label>
-            <div class="inp"><input id="t-date" type="date"></div>
-          </div>
-          <div>
-            <label for="t-name">Nom del viatge (opcional)</label>
-            <div class="inp"><input id="t-name" type="text" autocomplete="off" placeholder="Girona – Madrid"></div>
-          </div>
-        </div>
-        <div class="actions">
-          <button type="button" id="save" class="primary" disabled>Desar viatge</button>
-          <button type="button" id="save-new" hidden disabled>Desar com a nou</button>
-          <span id="save-status" class="status" role="status"></span>
-        </div>
-        <p id="save-hint" class="hint"></p>
-      </div>
-    </aside>
-  </div>
-
-  <section class="panel history" aria-labelledby="h-hist">
-    <div class="panel-head">
-      <h2 id="h-hist">Historial de viatges</h2>
-      <div class="actions">
-        <span id="hist-status" class="status" role="status"></span>
-        <button type="button" id="export" hidden>Exportar a CSV</button>
-      </div>
-    </div>
-    <p id="hist-mode" class="hint"></p>
-    <dl id="hist-summary" class="hsum"></dl>
-    <div id="hist-list" class="tablewrap"><p class="empty">Carregant l'historial…</p></div>
-  </section>
-</div>
-
-<script>
+'use strict';
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var STORE = 'tesla-cost-v1';
@@ -416,7 +20,6 @@ img { max-width: 100%; }
     return n.toLocaleString('ca-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
   }
   function eur(n) { return fmt(n, 2) + ' €'; }
-  function edit(n, d) { return fmt(n, d).replace(/\./g, ''); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   /* ---------- Càrregues ---------- */
@@ -585,7 +188,7 @@ img { max-width: 100%; }
         home: $('home').value, loss: $('loss').value, unit: 'wh', cons: $('cons').value,
         method: $('method').value, cap: $('cap').value
       }));
-    } catch (e) {}
+    } catch { /* sense emmagatzematge local */ }
     pushPrefs();
   }
   // Les dades antigues es guardaven en kWh per cada 100 km; ara sempre són Wh/km.
@@ -596,7 +199,7 @@ img { max-width: 100%; }
     return plain(v, 1);
   }
   function load() {
-    try { return JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { return null; }
+    try { return JSON.parse(localStorage.getItem(STORE) || 'null'); } catch { return null; }
   }
 
   function applyMethodUI() {
@@ -661,8 +264,8 @@ img { max-width: 100%; }
       ta.value = lastSummary; ta.setAttribute('readonly', '');
       ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) {}
+      var ok;
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
       document.body.removeChild(ta);
       st.textContent = ok ? 'Resum copiat.' : 'No s\'ha pogut copiar.';
     }
@@ -745,7 +348,7 @@ img { max-width: 100%; }
     if (exampleOn) h = 'Esborra l\'exemple per poder desar un viatge.';
     else if (storeMode === 'loading') h = 'Carregant l\'historial…';
     else if (storeMode === 'out') h = 'Entra amb Google per poder desar el viatge.';
-    else if (storeMode === 'unconfigured') h = 'Falta configurar Firebase. Mira el README.';
+    else if (storeMode === 'unconfigured') h = 'El servei de dades no està disponible en aquesta instal·lació.';
     else if (storeMode === 'error') h = 'No hi ha connexió amb el servei de dades.';
     else if (!lastResult) h = 'Omple el viatge perquè es pugui desar.';
     else if (editingId) h = 'Estàs editant un viatge de l\'historial. Pots actualitzar-lo o desar-ne una còpia.';
@@ -1052,7 +655,7 @@ img { max-width: 100%; }
       t += (++n) + '. Energia de casa: ' + g(d.energy, 2) + ' − ' + g(d.awayKwh, 2) + ' = ' + g(homeBat, 2) + ' kWh' + lossTxt + '.\n';
     }
     t += (++n) + '. Cost de casa: ' + g(d.homeKwh, 2) + ' kWh × ' + g(d.pHome, 4) + ' €/kWh = ' + eur(d.homeCost) + '.\n';
-    t += (++n) + '. Total: ' + eur(d.homeCost) + ' + ' + eur(d.awayCost) + ' = ' + eur(d.total) + '. Dividit entre ' + g(d.km, 1) + ' km, són ' + eur(d.per100) + ' cada 100 km.';
+    t += (n + 1) + '. Total: ' + eur(d.homeCost) + ' + ' + eur(d.awayCost) + ' = ' + eur(d.total) + '. Dividit entre ' + g(d.km, 1) + ' km, són ' + eur(d.per100) + ' cada 100 km.';
     return t;
   }
 
@@ -1092,7 +695,7 @@ img { max-width: 100%; }
       var msgs = {
         loading: 'Carregant l\'historial…',
         out: 'Entra amb Google per desar els viatges i veure\'ls des de qualsevol dispositiu.',
-        unconfigured: 'Falta configurar Firebase. Mira el fitxer README per fer-ho.',
+        unconfigured: 'L\'historial no està disponible en aquesta instal·lació.',
         error: 'No s\'ha pogut connectar amb el servei de dades. Torna-ho a provar més tard.'
       };
       $('hist-summary').innerHTML = '';
@@ -1259,21 +862,25 @@ img { max-width: 100%; }
       hist(c === 'auth/popup-blocked'
         ? 'El navegador ha bloquejat la finestra d\'inici de sessió. Permet-la i torna-ho a provar.'
         : c === 'auth/unauthorized-domain'
-          ? 'Aquest domini no està autoritzat a Firebase. Mira el README (pas 5).'
+          ? 'Aquest domini no està autoritzat per iniciar la sessió.'
           : 'No s\'ha pogut iniciar la sessió.');
     });
   });
   $('logout').addEventListener('click', function () { if (fb) fb.signOut(fb.auth); });
 
   function initStore() {
-    import('./firebase-config.js').then(function (m) { return m.firebaseConfig; }, function () { return null; }).then(function (cfg) {
+    import(new URL('firebase-config.js', document.baseURI).href).then(function (m) { return m.firebaseConfig; }, function () { return null; }).then(function (cfg) {
       if (!cfg || !cfg.apiKey || /^PEGA/.test(cfg.apiKey)) {
         storeMode = 'unconfigured'; setAuthUI(null); $('login').hidden = true; refresh(); return;
       }
       var base = 'https://www.gstatic.com/firebasejs/' + FB_VERSION + '/';
-      return Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]).then(function (mods) {
-        var App = mods[0], Au = mods[1], Fs = mods[2];
+      var loads = [import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')];
+      if (cfg.appCheckSiteKey) loads.push(import(base + 'firebase-app-check.js'));
+      return Promise.all(loads).then(function (mods) {
+        var App = mods[0], Au = mods[1], Fs = mods[2], Ac = mods[3];
         var app = App.initializeApp(cfg);
+        // App Check: Firestore i Auth només accepten peticions d'aquesta web (reCAPTCHA v3).
+        if (Ac) Ac.initializeAppCheck(app, { provider: new Ac.ReCaptchaV3Provider(cfg.appCheckSiteKey), isTokenAutoRefreshEnabled: true });
         var auth = Au.getAuth(app);
         fb = {
           auth: auth, db: Fs.getFirestore(app),
@@ -1286,6 +893,3 @@ img { max-width: 100%; }
     }).catch(function () { storeMode = 'error'; refresh(); });
   }
 })();
-</script>
-</body>
-</html>

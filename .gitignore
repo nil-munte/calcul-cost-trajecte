@@ -1,0 +1,7 @@
+node_modules/
+public/firebase-config.js
+playwright-report/
+test-results/
+*-debug.log
+.firebase/
+.DS_Store

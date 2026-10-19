@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cost de viatge Tesla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Cost de viatge Tesla</h1>
+      <p class="lead">Posa els quilòmetres i el consum del viatge, el preu de la llum de casa i les càrregues que has fet fora. La resta es calcula sola.</p>
+    </div>
+    <div class="auth">
+      <button type="button" id="login" class="primary" hidden>Entrar amb Google</button>
+      <span id="user" hidden>
+        <!-- [html-validate-disable-next element-required-attributes: el src s'assigna des de JS] -->
+        <img id="avatar" alt="" referrerpolicy="no-referrer" width="28" height="28">
+        <span id="uname"></span>
+        <button type="button" id="logout" class="link">Sortir</button>
+      </span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="col">
+      <div id="example" class="example" hidden>
+        <span>Ara hi ha dades d'exemple. Esborra-les i posa les del teu viatge.</span>
+        <button type="button" id="clear-example">Esborrar l'exemple</button>
+      </div>
+
+      <section class="panel" aria-labelledby="h-trip">
+        <div class="panel-head"><h2 id="h-trip">El viatge</h2></div>
+        <div class="fields">
+          <div class="wide">
+            <label for="method">Com vols calcular l'energia gastada?</label>
+            <div class="inp">
+              <select id="method" class="grow">
+                <option value="consum">Amb el consum del viatge (km × consum)</option>
+                <option value="bateria">Amb la bateria (% en sortir i en arribar)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="km">Quilòmetres totals</label>
+            <div class="inp"><input id="km" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">km</span></div>
+          </div>
+          <div id="cons-wrap">
+            <label for="cons">Consum mitjà</label>
+            <div class="inp">
+              <input id="cons" type="text" inputmode="decimal" autocomplete="off" placeholder="0">
+              <span class="unit">Wh/km</span>
+            </div>
+          </div>
+          <div class="bat" hidden>
+            <label for="soc0">Bateria en sortir</label>
+            <div class="inp"><input id="soc0" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
+          </div>
+          <div class="bat" hidden>
+            <label for="soc1">Bateria en arribar</label>
+            <div class="inp"><input id="soc1" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
+          </div>
+          <div class="bat" hidden>
+            <label for="cap">Capacitat de la bateria</label>
+            <div class="inp"><input id="cap" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
+          </div>
+          <p class="hint wide bat" hidden>Amb la bateria es compta tot el que ha gastat el cotxe, també el que gasta aparcat. A casa es compta el que caldria carregar per tornar al % amb què vas sortir. La capacitat és la de la teva bateria; si no és exacta, el resultat serà aproximat.</p>
+          <div>
+            <label for="home">Preu de la llum a casa</label>
+            <div class="inp"><input id="home" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€/kWh</span></div>
+          </div>
+          <div>
+            <label for="loss">Pèrdues de càrrega a casa</label>
+            <div class="inp"><input id="loss" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
+          </div>
+          <p class="hint wide">Les pèrdues són opcionals. El comptador de casa marca una mica més del que arriba a la bateria; amb 0 % es fa el càlcul simple, amb 8–10 % és més realista.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-charges">
+        <div class="panel-head">
+          <h2 id="h-charges">Càrregues fora de casa</h2>
+          <p class="hint">Mira els kWh i el preu a l'historial de càrregues de l'app.</p>
+        </div>
+        <div id="charges" class="charges"></div>
+        <datalist id="places"></datalist>
+        <div class="actions">
+          <button type="button" id="add" class="primary">Afegir càrrega</button>
+        </div>
+      </section>
+
+      <section id="proof-block" class="panel proof-block" aria-labelledby="h-proof">
+        <div class="panel-head">
+          <h2 id="h-proof">Justificants del viatge</h2>
+          <p class="hint">Captures de les càrregues, del consum del cotxe, tiquets o factures.</p>
+        </div>
+        <div id="proofs" class="proofs"></div>
+        <p id="proof-empty" class="hint">Encara no hi ha cap imatge.</p>
+        <div class="actions">
+          <button type="button" id="proof-add" disabled>Afegir imatges</button>
+          <input id="proof-file" type="file" accept="image/*" multiple hidden>
+          <span id="proof-status" class="status" role="status"></span>
+        </div>
+        <p id="proof-hint" class="hint"></p>
+      </section>
+
+      <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Imatge ampliada" hidden>
+        <!-- [html-validate-disable-next element-required-attributes: el src s'assigna des de JS] -->
+        <img id="lb-img" alt="Justificant del viatge">
+        <button type="button" id="lb-close" class="primary">Tancar</button>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="reset" class="link">Començar un viatge nou</button>
+      </div>
+      <div id="reset-ask" class="panel" hidden>
+        <p class="ask" style="margin:0">Començar un viatge nou esborra els km i les càrregues d'ara. Si no els has desat a l'historial, es perdran.</p>
+        <div class="ask-row">
+          <button type="button" id="reset-yes" class="danger">Sí, començar de nou</button>
+          <button type="button" id="reset-no">Cancel·lar</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="result" aria-labelledby="h-result" aria-live="polite">
+      <h2 id="h-result" class="total-label">Cost total del viatge</h2>
+      <div>
+        <div id="total" class="total">—</div>
+        <div class="ratios">
+          <span><b id="per100">—</b> /100 km</span>
+          <span><b id="perkm">—</b> /km</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="bar" role="img" id="bar" aria-label="Repartiment de l'energia entre casa i fora">
+          <span class="b-home" id="b-home" style="width:100%"></span>
+          <span class="b-away" id="b-away" style="width:0%"></span>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="split-row">
+          <span class="sw home" aria-hidden="true"></span>
+          <span class="t">Casa</span>
+          <span class="v" id="home-cost">—</span>
+          <span class="d" id="home-detail">—</span>
+        </div>
+        <div class="split-row">
+          <span class="sw away" aria-hidden="true"></span>
+          <span class="t">Fora</span>
+          <span class="v" id="away-cost">—</span>
+          <span class="d" id="away-detail">—</span>
+        </div>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Energia gastada al viatge</dt><dd id="f-energy">—</dd></div>
+        <div><dt>Si tot s'hagués carregat a casa</dt><dd id="f-allhome">—</dd></div>
+        <div><dt>Diferència per haver carregat fora</dt><dd id="f-diff">—</dd></div>
+      </dl>
+
+      <div id="notes" class="notes"></div>
+      <div class="actions">
+        <button type="button" id="copy">Copiar resum</button>
+        <span id="status" class="status" role="status"></span>
+      </div>
+
+      <div class="save">
+        <h3 class="mini">Desar a l'historial</h3>
+        <div class="save-fields">
+          <div>
+            <label for="t-date">Data</label>
+            <div class="inp"><input id="t-date" type="date"></div>
+          </div>
+          <div>
+            <label for="t-name">Nom del viatge (opcional)</label>
+            <div class="inp"><input id="t-name" type="text" autocomplete="off" placeholder="Girona – Madrid"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" id="save" class="primary" disabled>Desar viatge</button>
+          <button type="button" id="save-new" hidden disabled>Desar com a nou</button>
+          <span id="save-status" class="status" role="status"></span>
+        </div>
+        <p id="save-hint" class="hint"></p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="panel history" aria-labelledby="h-hist">
+    <div class="panel-head">
+      <h2 id="h-hist">Historial de viatges</h2>
+      <div class="actions">
+        <span id="hist-status" class="status" role="status"></span>
+        <button type="button" id="export" hidden>Exportar a CSV</button>
+      </div>
+    </div>
+    <p id="hist-mode" class="hint"></p>
+    <dl id="hist-summary" class="hsum"></dl>
+    <div id="hist-list" class="tablewrap"><p class="empty">Carregant l'historial…</p></div>
+  </section>
+</div>
+</body>
+</html>

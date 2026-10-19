@@ -1,70 +1,66 @@
-# Cost de viatge Tesla
+# Cost de trajecte
 
-Calculadora del cost d'un viatge amb el Tesla (casa + càrregues de fora), amb historial
-desat al teu compte de Google per veure'l des de qualsevol dispositiu.
+[![CI/CD](https://github.com/nil-munte/calcul-cost-trajecte/actions/workflows/ci.yml/badge.svg)](https://github.com/nil-munte/calcul-cost-trajecte/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Fitxers:
+Calculadora del cost real d'un viatge en cotxe elèctric, que combina l'energia carregada a casa i fora. Té historial sincronitzat amb el compte de Google.
 
-- `index.html`: la pàgina.
-- `firebase-config.js`: la configuració de Firebase (la fas tu al pas 4).
-- `firestore.rules`: les regles que fan que cadascú només vegi les seves dades (pas 3).
+**Producció:** <https://nil-munte.github.io/calcul-cost-trajecte/>
 
-## 1. Publicar a GitHub Pages
+## Funcionalitats
 
-1. Crea un repositori a GitHub, per exemple `cost-viatge-tesla`. Ha de ser **públic**:
-   amb el pla gratuït, GitHub Pages només funciona amb repositoris públics.
-   El que és públic és el codi. Els viatges no hi són, són a Firebase.
-2. Puja `index.html`, `firebase-config.js`, `firestore.rules` i aquest `README.md`
-   (Add file > Upload files).
-3. A Settings > Pages, a Source tria **Deploy from a branch**, branca `main`, carpeta `/ (root)`.
-4. En uns minuts (fins a 10) la pàgina serà a `https://EL_TEU_USUARI.github.io/cost-viatge-tesla/`.
+- Càlcul per consum (km × Wh/km) o per estat de la bateria (% inicial i final).
+- Càrregues externes amb preu propi; la resta s'imputa a la tarifa de casa, amb pèrdues de càrrega.
+- Historial per usuari amb justificants (imatges comprimides al client), edició i exportació a CSV.
+- Preferències sincronitzades entre dispositius.
 
-## 2. Crear el projecte a Firebase
+## Stack
 
-1. Ves a <https://console.firebase.google.com> i entra amb el teu Gmail.
-2. Add project. Posa-li un nom i desactiva Google Analytics (no cal).
-3. Build > **Authentication** > Get started > Sign-in method > **Google** > Enable.
-   Tria el teu correu com a correu d'assistència i desa.
-4. Build > **Firestore Database** > Create database. Tria una ubicació d'Europa
-   i el mode de producció.
+| Capa | Tecnologia |
+| --- | --- |
+| Frontend | HTML, CSS i JavaScript sense build |
+| Autenticació | Firebase Authentication (Google) |
+| Dades | Cloud Firestore |
+| Hosting | GitHub Pages, desplegat amb GitHub Actions |
+| Qualitat | ESLint, html-validate, Playwright, emulador de Firestore |
 
-No enllacis cap compte de facturació: el pla gratuït (Spark) és suficient.
+## Desenvolupament
 
-## 3. Regles de seguretat
+Requereix Node 24 (`.nvmrc`). Les proves de regles necessiten Java 21.
 
-A Firestore Database > Rules, esborra el que hi ha, enganxa el contingut de `firestore.rules`
-i prem **Publish**.
+```bash
+npm ci
+npm start            # http://localhost:8080
+npm run lint
+npm run test:e2e
+npm run test:rules
+```
 
-Opcional: si vols que només entris tu, canvia la condició per
-`request.auth.token.email == 'el.teu@gmail.com'`.
+Per treballar amb dades reals, copia `public/firebase-config.example.js` a `public/firebase-config.js` i omple-hi la configuració d'un projecte de Firebase. Aquest fitxer està ignorat per git.
 
-## 4. Configuració de la pàgina
+## Estructura
 
-1. A Project settings (la roda dentada) > Your apps, prem la icona web `</>` i registra una app
-   (no cal Firebase Hosting).
-2. Copia l'objecte `firebaseConfig` que et mostra.
-3. A GitHub, edita `firebase-config.js` i enganxa-hi els quatre valors
-   (`apiKey`, `authDomain`, `projectId`, `appId`). Desa (commit).
+```
+public/               aplicació estàtica (arrel publicada)
+  assets/             CSS i JavaScript
+firestore.rules       regles de seguretat de Firestore
+scripts/              eines de desplegament
+tests/e2e/            proves de navegador (Playwright)
+tests/rules/          proves de les regles (emulador)
+docs/                 arquitectura i operació
+```
 
-## 5. Autoritzar el domini
+## Desplegament
 
-A Authentication > Settings > **Authorized domains** > Add domain, afegeix
-`EL_TEU_USUARI.github.io` (només el domini, sense la ruta).
+Cada push a `main` passa el lint i les proves i, si tot és correcte, publica `public/` a GitHub Pages. La configuració de Firebase s'injecta en desplegar, a partir de les variables del repositori. Les regles de Firestore es despleguen amb el workflow manual *Deploy Firestore rules*. Vegeu [docs/operations.md](docs/operations.md).
 
-Sense aquest pas, l'inici de sessió falla amb l'error «domini no autoritzat».
+## Documentació
 
-## 6. Provar-ho
+- [Arquitectura i model de dades](docs/architecture.md)
+- [Operació i configuració d'entorns](docs/operations.md)
+- [Política de seguretat](SECURITY.md)
+- [Registre de canvis](CHANGELOG.md)
 
-Obre la pàgina, prem **Entrar amb Google**, calcula un viatge i prem **Desar viatge**.
-Entra des del mòbil amb el mateix compte i hi hauràs de veure el mateix historial.
+## Llicència
 
-## Notes
-
-- Les dades es guarden a Firestore, a `users/<el teu id>/trips`. El preu de casa, el consum
-  i les pèrdues també es sincronitzen (`users/<el teu id>/prefs/main`).
-- Els justificants (captures de les càrregues o del consum del cotxe, tiquets) es guarden també a Firestore, dins de cada viatge
-  (`users/<el teu id>/trips/<viatge>/images`). Es redimensionen i es comprimeixen al navegador
-  abans de pujar-los (uns 100-190 KB cadascun, màxim 8 per viatge), de manera que no cal Firebase
-  Storage ni cap compte de facturació.
-- El pla gratuït de Firebase té una quota diària d'ús. Per a un ús personal n'hi ha de sobres.
-- Per canviar la pàgina, edita `index.html` al repositori. Cal esperar uns minuts perquè es publiqui.
+[MIT](LICENSE)
