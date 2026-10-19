@@ -30,7 +30,7 @@
     el.className = 'charge';
     el.innerHTML =
       '<div class="name"><label for="cn' + n + '">Lloc (opcional)</label>' +
-      '<div class="inp"><input id="cn' + n + '" class="r-name" type="text" list="places" autocomplete="off" placeholder="Ionity, Zunder…" value="' + esc(d.name || '') + '"></div></div>' +
+      '<div class="inp"><input id="cn' + n + '" class="r-name" type="text" list="places" autocomplete="off" placeholder="Nom del carregador" value="' + esc(d.name || '') + '"></div></div>' +
       '<div><label for="ck' + n + '">Energia</label>' +
       '<div class="inp"><input id="ck' + n + '" class="r-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="' + esc(d.kwh || '') + '"><span class="unit">kWh</span></div></div>' +
       '<div><label for="cp' + n + '">Preu</label>' +

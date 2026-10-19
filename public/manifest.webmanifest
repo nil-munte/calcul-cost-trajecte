@@ -1,0 +1,17 @@
+{
+  "name": "Cost de viatge en elèctric",
+  "short_name": "Cost viatge",
+  "description": "Calculadora del cost d'un viatge en cotxe elèctric, amb la càrrega de casa i la de fora.",
+  "lang": "ca",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c1413",
+  "theme_color": "#0b7a6b",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/logo.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

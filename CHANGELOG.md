@@ -2,6 +2,18 @@
 
 El format segueix [Keep a Changelog](https://keepachangelog.com/ca/1.1.0/) i el projecte fa servir [versionat semàntic](https://semver.org/lang/ca/).
 
+## [1.2.0] - 2026-10-19
+
+### Afegit
+
+- Logo, icones, manifest i imatge per compartir a xarxes socials.
+- Metadades de SEO, dades estructurades i sitemap.
+- Preguntes freqüents, peu de pàgina i pàgina de privacitat.
+
+### Canviat
+
+- Les fonts es serveixen des del mateix domini, sense connexions a Google Fonts.
+
 ## [1.1.0] - 2026-10-19
 
 ### Canviat

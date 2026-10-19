@@ -1,6 +1,6 @@
 {
   "name": "calcul-cost-trajecte",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Calculadora del cost d'un viatge en cotxe elèctric, amb historial sincronitzat.",
   "license": "MIT",
@@ -12,14 +12,17 @@
     "start": "serve public -l 8080",
     "lint": "npm run lint:js && npm run lint:html",
     "lint:js": "eslint .",
-    "lint:html": "html-validate public/index.html",
+    "lint:html": "html-validate public/*.html",
     "test": "npm run test:e2e",
     "test:rules": "firebase emulators:exec --only firestore --project demo-cost-trajecte \"node --test tests/rules/firestore.rules.test.js\"",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "assets": "node scripts/render-assets.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@firebase/rules-unit-testing": "^6.0.0",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource/hanken-grotesk": "^5.3.0",
     "@playwright/test": "^1.64.1",
     "eslint": "^10.13.0",
     "firebase": "^13.0.0",

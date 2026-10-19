@@ -3,10 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cost de viatge en elèctric</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<title>Cost de viatge en elèctric · Calculadora de càrrega casa i fora</title>
+<meta name="description" content="Calculadora gratuïta del cost d'un viatge en cotxe elèctric. Suma la càrrega de casa i la de fora, compara amb carregar-ho tot a casa i desa l'historial.">
+<link rel="canonical" href="https://nil-munte.github.io/calcul-cost-trajecte/">
+<meta name="theme-color" content="#f1f5f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c1413" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icons/logo.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ca_ES">
+<meta property="og:site_name" content="Cost de viatge en elèctric">
+<meta property="og:title" content="Cost de viatge en elèctric">
+<meta property="og:description" content="Quant t'ha costat el viatge, sumant la càrrega de casa i la de fora. Gratuït i sense registre.">
+<meta property="og:url" content="https://nil-munte.github.io/calcul-cost-trajecte/">
+<meta property="og:image" content="https://nil-munte.github.io/calcul-cost-trajecte/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Calculadora amb un cost total de 18,56 € repartit entre casa i fora">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cost de viatge en elèctric",
+  "url": "https://nil-munte.github.io/calcul-cost-trajecte/",
+  "description": "Calculadora del cost d'un viatge en cotxe elèctric, amb la càrrega de casa i la de fora.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "ca",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "image": "https://nil-munte.github.io/calcul-cost-trajecte/icons/icon-512.png"
+}
+</script>
 <link rel="stylesheet" href="assets/app.css">
 <script src="assets/app.js" defer></script>
 </head>
@@ -14,7 +45,7 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>Cost de viatge en elèctric</h1>
+      <h1><img class="logo" src="icons/logo.svg" alt="" width="40" height="40">Cost de viatge en elèctric</h1>
       <p class="lead">Calcula el cost d'un viatge sumant l'energia carregada a casa i la de fora.</p>
     </div>
     <div class="auth">
@@ -206,6 +237,31 @@
     <dl id="hist-summary" class="hsum"></dl>
     <div id="hist-list" class="tablewrap"><p class="empty">Carregant l'historial…</p></div>
   </section>
+
+  <section class="panel faq" aria-labelledby="h-faq">
+    <h2 id="h-faq">Preguntes freqüents</h2>
+    <details>
+      <summary>Com es calcula el cost?</summary>
+      <p>Es calcula l'energia del viatge (km × consum, o la diferència de bateria). Les càrregues de fora es paguen al seu preu, i la resta es compta al preu de la llum de casa.</p>
+    </details>
+    <details>
+      <summary>Què són les pèrdues de càrrega?</summary>
+      <p>Part de l'energia es perd en carregar, i el comptador de casa marca més del que arriba a la bateria. Amb un carregador de paret, sol ser un 8–10 %.</p>
+    </details>
+    <details>
+      <summary>Serveix per a qualsevol cotxe elèctric?</summary>
+      <p>Sí. Només cal el consum mitjà del viatge, o el percentatge de bateria i la capacitat del cotxe.</p>
+    </details>
+    <details>
+      <summary>Cal registrar-se?</summary>
+      <p>No. La calculadora funciona sense compte. Entrar amb Google només serveix per desar l'historial i veure'l des d'altres dispositius.</p>
+    </details>
+  </section>
+
+  <footer class="foot">
+    <p>Els resultats són orientatius i depenen de les dades que hi posis. Sense publicitat ni analítica.</p>
+    <p><a href="privacitat.html">Privacitat</a> · <a href="https://github.com/nil-munte/calcul-cost-trajecte">Codi obert a GitHub</a></p>
+  </footer>
 </div>
 </body>
 </html>

@@ -1,3 +1,9 @@
+/* Fonts allotjades al mateix servidor (SIL Open Font License, vegeu fonts/LICENSE-OFL.txt). */
+@font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-weight: 200 800; font-display: swap; src: url("../fonts/bricolage-grotesque.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/hanken-grotesk-400.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/hanken-grotesk-500.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/hanken-grotesk-600.woff2") format("woff2"); }
+
 /* Layout: columna d'entrades (viatge + càrregues) a l'esquerra, resultat enganxat a la dreta; en mòbil tot en una columna. */
 :root {
   --bg: #f1f5f5;
@@ -186,3 +192,20 @@ td.acts .ask { display: block; white-space: normal; max-width: 220px; margin: 0 
 body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
+
+/* Logo, preguntes i peu */
+h1 { display: flex; align-items: center; gap: 12px; }
+h1 .logo { flex: none; width: 40px; height: 40px; border-radius: 10px; }
+.faq { margin-top: 20px; }
+.faq details { border-top: 1px solid var(--line); padding: 12px 0; }
+.faq details:first-of-type { border-top: 0; padding-top: 0; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.faq p { margin: 8px 0 0; color: var(--muted); max-width: 70ch; }
+.foot { margin-top: 28px; color: var(--muted); font-size: 0.8125rem; display: grid; gap: 6px; }
+.foot p { margin: 0; }
+.foot a { color: inherit; text-underline-offset: 3px; }
+.doc { max-width: 70ch; }
+.doc h2 { margin-top: 28px; font-size: 1.15rem; }
+.doc p, .doc li { color: var(--fg); }
+.doc a { color: var(--home); }

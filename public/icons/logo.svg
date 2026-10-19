@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Cost de viatge en elèctric">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#11917f"/>
+      <stop offset="1" stop-color="#075f53"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <!-- Ruta: tram de casa (blanc) i tram de fora (taronja) -->
+  <path d="M104 412c64 0 84-56 152-56s88 56 152 56" fill="none" stroke="#ffffff" stroke-opacity=".3" stroke-width="28" stroke-linecap="round"/>
+  <path d="M256 356c68 0 88 56 152 56" fill="none" stroke="#f0914a" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="408" cy="412" r="26" fill="#f0914a"/>
+  <!-- Llamp -->
+  <path d="M286 64 170 240h80l-24 104 120-178h-80z" fill="#ffffff" stroke="#ffffff" stroke-width="12" stroke-linejoin="round"/>
+</svg>

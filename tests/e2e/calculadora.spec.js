@@ -43,3 +43,11 @@ test('no té errors de consola', async ({ page }) => {
   await expect(page.locator('#total')).not.toHaveText('—');
   expect(errors).toEqual([]);
 });
+
+test('té metadades de SEO i la pàgina de privacitat', async ({ page }) => {
+  await expect(page).toHaveTitle(/Cost de viatge en elèctric/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /cotxe elèctric/);
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', 'manifest.webmanifest');
+  await page.getByRole('link', { name: 'Privacitat' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Privacitat');
+});
