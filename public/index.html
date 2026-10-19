@@ -71,6 +71,14 @@
       <section class="panel" aria-labelledby="h-trip">
         <div class="panel-head"><h2 id="h-trip">El viatge</h2></div>
         <div class="fields">
+          <div>
+            <label for="t-name">Nom del viatge (opcional)</label>
+            <div class="inp"><input id="t-name" type="text" autocomplete="off" placeholder="Girona – Madrid"></div>
+          </div>
+          <div>
+            <label for="t-date">Data</label>
+            <div class="inp"><input id="t-date" type="date"></div>
+          </div>
           <div class="wide">
             <label for="method">Mètode de càlcul</label>
             <div class="inp">
@@ -162,7 +170,10 @@
     </div>
 
     <aside class="result" aria-labelledby="h-result" aria-live="polite">
-      <h2 id="h-result" class="total-label">Cost total del viatge</h2>
+      <div>
+        <h2 id="h-result" class="total-label">Cost total del viatge</h2>
+        <p id="r-trip" class="trip-tag" hidden></p>
+      </div>
       <div>
         <div id="total" class="total">—</div>
         <div class="ratios">
@@ -207,16 +218,6 @@
 
       <div class="save">
         <h3 class="mini">Desar a l'historial</h3>
-        <div class="save-fields">
-          <div>
-            <label for="t-date">Data</label>
-            <div class="inp"><input id="t-date" type="date"></div>
-          </div>
-          <div>
-            <label for="t-name">Nom del viatge (opcional)</label>
-            <div class="inp"><input id="t-name" type="text" autocomplete="off" placeholder="Girona – Madrid"></div>
-          </div>
-        </div>
         <div class="actions">
           <button type="button" id="save" class="primary" disabled>Desar viatge</button>
           <button type="button" id="save-new" hidden disabled>Desar com a nou</button>

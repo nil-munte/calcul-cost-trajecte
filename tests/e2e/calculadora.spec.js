@@ -51,3 +51,12 @@ test('té metadades de SEO i la pàgina de privacitat', async ({ page }) => {
   await page.getByRole('link', { name: 'Privacitat' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Privacitat');
 });
+
+test('mostra el nom i la data del viatge al resultat', async ({ page }) => {
+  await expect(page.locator('#r-trip')).toBeHidden();
+  await page.locator('#t-name').fill('Riudoms – Ulldemolins');
+  await page.locator('#t-date').fill('2026-10-13');
+  await expect(page.locator('#r-trip')).toHaveText('Riudoms – Ulldemolins · 13/10/2026');
+  await page.locator('#t-name').fill('');
+  await expect(page.locator('#r-trip')).toBeHidden();
+});

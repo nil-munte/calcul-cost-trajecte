@@ -136,6 +136,7 @@
   }
 
   function render(r, notes, missing) {
+    renderTripTag();
     var N = $('notes');
     N.innerHTML = notes.map(function (n) { return '<div class="note">' + esc(n) + '</div>'; }).join('');
 
@@ -179,6 +180,14 @@
     lastResult = r;
     lastSummary = summaryText(buildTrip());
     updateSaveState();
+  }
+
+  // Nom i data del viatge al resultat, perquè qualsevol captura digui de quin viatge es tracta.
+  function renderTripTag() {
+    var name = $('t-name').value.trim();
+    var date = $('t-date').value;
+    $('r-trip').hidden = !name;
+    $('r-trip').textContent = name ? name + (date ? ' · ' + fmtDate(date) : '') : '';
   }
 
   /* ---------- Preferències ---------- */

@@ -138,8 +138,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 button:disabled:hover { border-color: var(--line); }
 .save { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 12px; }
 .mini { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 0.95rem; }
-.save-fields { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 400px) { .save-fields { grid-template-columns: 150px minmax(0, 1fr); } }
+.trip-tag { margin: 4px 0 0; font-weight: 600; overflow-wrap: anywhere; }
 
 .proof-block { display: grid; gap: 12px; align-content: start; }
 .proof-block.dropping { outline: 2px dashed var(--focus); outline-offset: 4px; border-radius: 8px; }
