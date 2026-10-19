@@ -30,7 +30,7 @@
     el.className = 'charge';
     el.innerHTML =
       '<div class="name"><label for="cn' + n + '">Lloc (opcional)</label>' +
-      '<div class="inp"><input id="cn' + n + '" class="r-name" type="text" list="places" autocomplete="off" placeholder="Supercharger, Ionity…" value="' + esc(d.name || '') + '"></div></div>' +
+      '<div class="inp"><input id="cn' + n + '" class="r-name" type="text" list="places" autocomplete="off" placeholder="Ionity, Zunder…" value="' + esc(d.name || '') + '"></div></div>' +
       '<div><label for="ck' + n + '">Energia</label>' +
       '<div class="inp"><input id="ck' + n + '" class="r-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="' + esc(d.kwh || '') + '"><span class="unit">kWh</span></div></div>' +
       '<div><label for="cp' + n + '">Preu</label>' +
@@ -118,7 +118,7 @@
       homeBat = Math.max(0, energy - away);
       consKwhKm = meterKwhKm;
       if (away > energy) {
-        notes.push('Has carregat fora ' + fmt(away - energy, 1) + ' kWh més dels que has gastat. A casa es compta 0 kWh. Pot ser que hagis acabat el viatge amb més bateria de la que vas començar.');
+        notes.push('Has carregat fora ' + fmt(away - energy, 1) + ' kWh més dels que has gastat. A casa es compta 0 kWh.');
       }
     }
     var homeWall = homeBat / (1 - loss / 100);     // kWh que paga el comptador de casa
@@ -307,7 +307,7 @@
     $('cons').dataset.example = '1';
     $('home').value = '0,14';
     $('loss').value = '0';
-    addRow({ name: 'Supercharger (exemple)', kwh: '28', price: '0,45' });
+    addRow({ name: 'Electrolinera (exemple)', kwh: '28', price: '0,45' });
     $('example').hidden = false;
   }
   $('t-date').value = today();
@@ -440,7 +440,7 @@
     var h;
     if (!ok) h = storeMode === 'out' ? 'Entra amb Google per poder afegir i desar imatges.' : storeMode === 'loading' ? '' : 'Les imatges necessiten el servei de dades.';
     else if (imgs.length >= MAX_IMGS) h = 'Has arribat al màxim de ' + MAX_IMGS + ' imatges per viatge.';
-    else h = 'Es redimensionen i es desen amb el viatge. Màxim ' + MAX_IMGS + '. També pots arrossegar-les o enganxar-les amb Ctrl+V.';
+    else h = 'Màxim ' + MAX_IMGS + '. També les pots arrossegar o enganxar (Ctrl+V).';
     $('proof-hint').textContent = h;
   }
 
@@ -689,7 +689,7 @@
     refreshPlaces();
     updateProofUI();
     var list = $('hist-list');
-    $('hist-mode').textContent = storeMode === 'db' ? 'Desat al teu compte de Google. Només tu el veus, des de qualsevol dispositiu.' : '';
+    $('hist-mode').textContent = storeMode === 'db' ? 'Només tu el veus, des de qualsevol dispositiu.' : '';
     $('export').hidden = !(storeMode === 'db' && trips.length);
     if (storeMode !== 'db') {
       var msgs = {
@@ -780,7 +780,7 @@
     var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'historial-viatges-tesla.csv';
+    a.download = 'historial-viatges.csv';
     document.body.appendChild(a);
     a.click();
     a.remove();

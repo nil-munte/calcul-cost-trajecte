@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cost de viatge Tesla</title>
+<title>Cost de viatge en elèctric</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap">
@@ -14,8 +14,8 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>Cost de viatge Tesla</h1>
-      <p class="lead">Posa els quilòmetres i el consum del viatge, el preu de la llum de casa i les càrregues que has fet fora. La resta es calcula sola.</p>
+      <h1>Cost de viatge en elèctric</h1>
+      <p class="lead">Calcula el cost d'un viatge sumant l'energia carregada a casa i la de fora.</p>
     </div>
     <div class="auth">
       <button type="button" id="login" class="primary" hidden>Entrar amb Google</button>
@@ -31,7 +31,7 @@
   <div class="grid">
     <div class="col">
       <div id="example" class="example" hidden>
-        <span>Ara hi ha dades d'exemple. Esborra-les i posa les del teu viatge.</span>
+        <span>Són dades d'exemple.</span>
         <button type="button" id="clear-example">Esborrar l'exemple</button>
       </div>
 
@@ -39,11 +39,11 @@
         <div class="panel-head"><h2 id="h-trip">El viatge</h2></div>
         <div class="fields">
           <div class="wide">
-            <label for="method">Com vols calcular l'energia gastada?</label>
+            <label for="method">Mètode de càlcul</label>
             <div class="inp">
               <select id="method" class="grow">
-                <option value="consum">Amb el consum del viatge (km × consum)</option>
-                <option value="bateria">Amb la bateria (% en sortir i en arribar)</option>
+                <option value="consum">Per consum (km × Wh/km)</option>
+                <option value="bateria">Per bateria (% en sortir i en arribar)</option>
               </select>
             </div>
           </div>
@@ -70,7 +70,7 @@
             <label for="cap">Capacitat de la bateria</label>
             <div class="inp"><input id="cap" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">kWh</span></div>
           </div>
-          <p class="hint wide bat" hidden>Amb la bateria es compta tot el que ha gastat el cotxe, també el que gasta aparcat. A casa es compta el que caldria carregar per tornar al % amb què vas sortir. La capacitat és la de la teva bateria; si no és exacta, el resultat serà aproximat.</p>
+          <p class="hint wide bat" hidden>Inclou el que gasta el cotxe aparcat. A casa es compta el que cal carregar per tornar al % de sortida.</p>
           <div>
             <label for="home">Preu de la llum a casa</label>
             <div class="inp"><input id="home" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00"><span class="unit">€/kWh</span></div>
@@ -79,14 +79,14 @@
             <label for="loss">Pèrdues de càrrega a casa</label>
             <div class="inp"><input id="loss" type="text" inputmode="decimal" autocomplete="off" placeholder="0"><span class="unit">%</span></div>
           </div>
-          <p class="hint wide">Les pèrdues són opcionals. El comptador de casa marca una mica més del que arriba a la bateria; amb 0 % es fa el càlcul simple, amb 8–10 % és més realista.</p>
+          <p class="hint wide">Opcional. El comptador marca més del que arriba a la bateria; un 8–10 % és habitual.</p>
         </div>
       </section>
 
       <section class="panel" aria-labelledby="h-charges">
         <div class="panel-head">
           <h2 id="h-charges">Càrregues fora de casa</h2>
-          <p class="hint">Mira els kWh i el preu a l'historial de càrregues de l'app.</p>
+          <p class="hint">Els kWh i el preu surten al tiquet o a l'app del carregador.</p>
         </div>
         <div id="charges" class="charges"></div>
         <datalist id="places"></datalist>
@@ -98,7 +98,7 @@
       <section id="proof-block" class="panel proof-block" aria-labelledby="h-proof">
         <div class="panel-head">
           <h2 id="h-proof">Justificants del viatge</h2>
-          <p class="hint">Captures de les càrregues, del consum del cotxe, tiquets o factures.</p>
+          <p class="hint">Tiquets, factures o captures del consum.</p>
         </div>
         <div id="proofs" class="proofs"></div>
         <p id="proof-empty" class="hint">Encara no hi ha cap imatge.</p>
@@ -120,7 +120,7 @@
         <button type="button" id="reset" class="link">Començar un viatge nou</button>
       </div>
       <div id="reset-ask" class="panel" hidden>
-        <p class="ask" style="margin:0">Començar un viatge nou esborra els km i les càrregues d'ara. Si no els has desat a l'historial, es perdran.</p>
+        <p class="ask" style="margin:0">S'esborraran els km i les càrregues que no hagis desat.</p>
         <div class="ask-row">
           <button type="button" id="reset-yes" class="danger">Sí, començar de nou</button>
           <button type="button" id="reset-no">Cancel·lar</button>

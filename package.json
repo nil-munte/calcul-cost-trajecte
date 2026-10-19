@@ -1,6 +1,6 @@
 {
   "name": "calcul-cost-trajecte",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Calculadora del cost d'un viatge en cotxe elèctric, amb historial sincronitzat.",
   "license": "MIT",
