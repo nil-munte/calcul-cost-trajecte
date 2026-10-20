@@ -4,10 +4,20 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    commit-message:
+      prefix: deps
     groups:
       dev-dependencies:
         patterns: ['*']
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']
